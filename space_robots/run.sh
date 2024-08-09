@@ -11,6 +11,36 @@ IMG_NAME=openrobotics/space_robots_demo
 # And append `_runtime`
 CONTAINER_NAME="$(tr '/' '_' <<< "$IMG_NAME")"
 
-# Start the container
-docker run --rm -it --name $CONTAINER_NAME  --network host \
-    -e DISPLAY -e TERM   -e QT_X11_NO_MITSHM=1 $IMG_NAME
+XSOCK=/tmp/.X11-unix
+XAUTH=/tmp/.docker.xauth
+touch $XAUTH
+xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
+
+echo "Running Docker Container"
+
+# Check if there is an already running container with the same distro
+full_container_name="${CONTAINER_NAME}"
+running_container="$(docker container ls -al | grep $full_container_name)"
+
+if [ -z "$running_container" ]; then
+  echo "Running $full_container_name for the first time!"
+else
+  echo "Found an open $full_container_name container. Starting and attaching!"
+  eval "docker start $full_container_name"
+  eval "docker attach $full_container_name"
+  exit 0
+fi
+
+docker run \
+  -it \
+  --network host \
+  --privileged \
+  --volume=$XSOCK:$XSOCK:rw \
+  --volume=$XAUTH:$XAUTH:rw \
+  --env="XAUTHORITY=${XAUTH}" \
+  --env DISPLAY=$DISPLAY \
+  --env TERM=xterm-256color \
+  --name $full_container_name \
+  --add-host=host.docker.internal:host-gateway \
+  $IMG_NAME \
+  /bin/bash
