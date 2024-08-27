@@ -40,6 +40,7 @@ docker run \
   --env="XAUTHORITY=${XAUTH}" \
   --env DISPLAY=$DISPLAY \
   --env TERM=xterm-256color \
+  --gpus all \
   --name $full_container_name \
   --add-host=host.docker.internal:host-gateway \
   $IMG_NAME \
