@@ -38,6 +38,7 @@ docker run \
   --volume=$XSOCK:$XSOCK:rw \
   --volume=$XAUTH:$XAUTH:rw \
   --volume=${PWD%/*}/space-ros-demos:/home/spaceros-user/demos_ws/src/demos:rw \
+  --volume=${PWD%/*}/simulation:/home/spaceros-user/demos_ws/src/simulation:rw \
   --env="XAUTHORITY=${XAUTH}" \
   --env DISPLAY=$DISPLAY \
   --env TERM=xterm-256color \

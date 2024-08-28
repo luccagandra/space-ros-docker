@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <model name="fog_generator">
+        <pose>0 0 0 0 -1.57 0</pose>
+        <static>true</static>
+        <link name="fog_link">
+            <particle_emitter name="emitter" type="box">
+                <emitting>true</emitting>
+                <size>300 300 300</size>
+                <particle_size>300 300 300</particle_size>
+                <lifetime>25</lifetime>
+                <min_velocity>0.1</min_velocity>
+                <max_velocity>0.1</max_velocity>
+                <scale_rate>0.5</scale_rate>
+                <rate>5</rate>
+                <material>
+                    <diffuse>0.7 0.7 0.7</diffuse>
+                    <specular>1.0 1.0 1.0</specular>
+                    <pbr>
+                        <metal>
+                            <albedo_map>materials/textures/fog.png</albedo_map>
+                        </metal>
+                    </pbr>
+                </material>
+                <color_range_image>/home/spaceros-user/demos_ws/install/simulation/share/simulation/models/fog_generator/materials/textures/dustcolors_1.png</color_range_image>
+            </particle_emitter>
+        </link>
+    </model>
+</sdf>
